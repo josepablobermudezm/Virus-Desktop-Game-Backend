@@ -37,6 +37,9 @@ public class PartidaDto {
     }
 
     public void crearMazo() {
+        if(this.mazo == null){
+            mazo = new ArrayList();
+        }
         mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
         mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
         mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
@@ -182,7 +185,7 @@ public class PartidaDto {
         ArrayList<CartaDto> cartas = new ArrayList<>();
         if (!mazo.isEmpty()) {
             for (CartaDto carta : mazo) {
-                if (mazo.indexOf(carta) < 2) {
+                if (mazo.indexOf(carta) <= 2) {
                     cartas.add(carta);
                 }
             }

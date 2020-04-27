@@ -83,17 +83,24 @@ public class VirusServidor {
             InputStream inputStream = socket.getInputStream();
             // create a DataInputStream so we can read data from it.
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-
+            
+            OutputStream outputstream = socket.getOutputStream();
+            ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
+            
             JugadorDto Jugador = (JugadorDto) objectInputStream.readObject();
             System.out.println("Mensajes:");
             System.out.println(Jugador.toString());
             
             partida.getJugadores().add(Jugador);
+            System.out.println("Entregando Cartas a "+Jugador.getNombre());
+            objectoutputstream.writeObject(partida.getCartasPorJugador());
+            //partida.entregarCartasJugador(Jugador.getIP());
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
-        }catch(Exception IO){
-
+            
+        }catch(IOException | ClassNotFoundException IO){
+            System.out.println(IO.getMessage());
         }
     }
     
