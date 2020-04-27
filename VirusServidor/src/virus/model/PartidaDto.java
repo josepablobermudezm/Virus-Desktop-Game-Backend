@@ -23,7 +23,7 @@ public class PartidaDto {
     private ArrayList<CartaDto> mazo;
     private ArrayList<CartaDto> desechadas;
     private ArrayList<JugadorDto> jugadores;
-    
+
     public PartidaDto(ArrayList<CartaDto> mazo, ArrayList<CartaDto> desechadas, ArrayList<JugadorDto> jugadores) {
         this.mazo = mazo;
         this.desechadas = desechadas;
@@ -32,6 +32,7 @@ public class PartidaDto {
 
     public PartidaDto() {
     }
+
     public void mazoCartas(String Ip) {
         try {
             Socket socket = new Socket(Ip, 44440);
@@ -123,7 +124,7 @@ public class PartidaDto {
             mazo.add(new CartaDto("Guante", "Morado", "guantesDeLatexCarta.png", "Mazo"));
 
             mazo.add(new CartaDto("Error", "Morado", "errorMedicoCarta.png", "Mazo"));
-            
+
             Collections.shuffle(mazo);
 
             System.out.println("Sending messages to the ServerSocket");
@@ -136,7 +137,7 @@ public class PartidaDto {
     }
 
     public ArrayList<CartaDto> getMazo() {
-        if(mazo==null){
+        if (mazo == null) {
             mazo = new ArrayList();
         }
         return mazo;
@@ -147,7 +148,7 @@ public class PartidaDto {
     }
 
     public ArrayList<CartaDto> getDesechadas() {
-        if(desechadas==null){
+        if (desechadas == null) {
             desechadas = new ArrayList();
         }
         return desechadas;
@@ -158,7 +159,7 @@ public class PartidaDto {
     }
 
     public ArrayList<JugadorDto> getJugadores() {
-        if(jugadores==null){
+        if (jugadores == null) {
             jugadores = new ArrayList();
         }
         return jugadores;
@@ -167,12 +168,12 @@ public class PartidaDto {
     public void setJugadores(ArrayList<JugadorDto> jugadores) {
         this.jugadores = jugadores;
     }
-    
-    public ArrayList <CartaDto> getCartasPorJugador(){
-        ArrayList <CartaDto> cartas = new ArrayList<>();
-        if(!mazo.isEmpty()){
-            for(CartaDto carta : mazo){
-                if(mazo.indexOf(carta)<2){
+
+    public ArrayList<CartaDto> getCartasPorJugador() {
+        ArrayList<CartaDto> cartas = new ArrayList<>();
+        if (!mazo.isEmpty()) {
+            for (CartaDto carta : mazo) {
+                if (mazo.indexOf(carta) < 2) {
                     cartas.add(carta);
                 }
             }
@@ -180,7 +181,7 @@ public class PartidaDto {
         mazo.removeAll(cartas);
         return cartas;
     }
-    
+
     @Override
     public String toString() {
         return "PartidaDto{" + "mazo=" + mazo + ", desechadas=" + desechadas + ", jugadores=" + jugadores + '}';
