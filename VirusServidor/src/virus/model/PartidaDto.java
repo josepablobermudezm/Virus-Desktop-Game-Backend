@@ -167,7 +167,20 @@ public class PartidaDto {
     public void setJugadores(ArrayList<JugadorDto> jugadores) {
         this.jugadores = jugadores;
     }
-
+    
+    public ArrayList <CartaDto> getCartasPorJugador(){
+        ArrayList <CartaDto> cartas = new ArrayList<>();
+        if(!mazo.isEmpty()){
+            for(CartaDto carta : mazo){
+                if(mazo.indexOf(carta)<2){
+                    cartas.add(carta);
+                }
+            }
+        }
+        mazo.removeAll(cartas);
+        return cartas;
+    }
+    
     @Override
     public String toString() {
         return "PartidaDto{" + "mazo=" + mazo + ", desechadas=" + desechadas + ", jugadores=" + jugadores + '}';
