@@ -126,6 +126,7 @@ public class PartidaDto {
         Collections.shuffle(mazo);
     }
     
+    
     public void entregarCartasJugador(String Ip) {
         try {
             Socket socket = new Socket(Ip, 44440);
