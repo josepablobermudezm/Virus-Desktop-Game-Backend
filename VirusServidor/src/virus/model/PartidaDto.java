@@ -31,104 +31,103 @@ public class PartidaDto {
     }
 
     public PartidaDto() {
-	}
-    public void mazoCartas() {
+    }
+    public void mazoCartas(String Ip) {
         try {
-            Socket socket = new Socket("25.3.190.217", 44440);
+            Socket socket = new Socket(Ip, 44440);
             System.out.println("Connected!");
             // get the output stream from the socket.
             OutputStream outputStream = socket.getOutputStream();
             // create an object output stream from the output stream so we can send an object through it
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
             // make a bunch of messages to send.
-            ArrayList<CartaDto> cartas = new ArrayList<>();
-            cartas.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-            cartas.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-            cartas.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-            cartas.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-            cartas.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
+            mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
+            mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
+            mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
+            mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
+            mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
 
-            cartas.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
-            cartas.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
-            cartas.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
-            cartas.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
-            cartas.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
+            mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
+            mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
+            mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
+            mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
+            mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
 
-            cartas.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
-            cartas.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
-            cartas.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
-            cartas.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
-            cartas.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
+            mazo.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
+            mazo.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
+            mazo.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
+            mazo.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
+            mazo.add(new CartaDto("Cerebro", "Azul", "cerebroCarta.png", "mazo"));
 
-            cartas.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
-            cartas.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
-            cartas.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
-            cartas.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
-            cartas.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
+            mazo.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
+            mazo.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
+            mazo.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
+            mazo.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
+            mazo.add(new CartaDto("Hueso", "Amarillo", "HuesoCarta.png", "mazo"));
 
-            cartas.add(new CartaDto("Organo_Comodin", "Comodin", "comodinOrgano.png", "mazo"));
+            mazo.add(new CartaDto("Organo_Comodin", "Comodin", "comodinOrgano.png", "mazo"));
 
-            cartas.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Rojo", "virusRojoCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Verde", "virusVerdeCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Virus_Comodin", "Comodin", "comodinVirus.png", "Mazo"));
+            mazo.add(new CartaDto("Virus_Comodin", "Comodin", "comodinVirus.png", "Mazo"));
 
-            cartas.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Rojo", "medicinaRojaCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Verde", "medicinaVerdeCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina", "Amarillo", "medicinaAmarrilloCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
-            cartas.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
+            mazo.add(new CartaDto("Medicina_Comodin", "Comodin", "comodinMedicina.png", "Mazo"));
 
-            cartas.add(new CartaDto("Transplante", "Morado", "transplanteCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Transplante", "Morado", "transplanteCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Transplante", "Morado", "transplanteCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Transplante", "Morado", "transplanteCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Mazo"));
-            cartas.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Guante", "Morado", "guantesDeLatexCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Guante", "Morado", "guantesDeLatexCarta.png", "Mazo"));
 
-            cartas.add(new CartaDto("Error", "Morado", "errorMedicoCarta.png", "Mazo"));
+            mazo.add(new CartaDto("Error", "Morado", "errorMedicoCarta.png", "Mazo"));
             
-            Collections.shuffle(cartas);
+            Collections.shuffle(mazo);
 
             System.out.println("Sending messages to the ServerSocket");
-            objectOutputStream.writeObject(cartas);
+            objectOutputStream.writeObject(mazo);
 
             System.out.println("Closing socket and terminating program.");
             socket.close();
