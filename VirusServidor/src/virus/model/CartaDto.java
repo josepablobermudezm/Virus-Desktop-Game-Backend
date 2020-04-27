@@ -31,6 +31,7 @@ public class CartaDto implements Serializable {
     public String toString() {
         return "CartaDto{" + "tipoCarta=" + tipoCarta + ", color=" + color + ", imagen=" + imagen + ", estado=" + estado + '}';
     }
+    
 
     public CartaDto(String tipoCarta, String color, String imagen, String estado) {
         this.tipoCarta = tipoCarta;

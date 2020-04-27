@@ -5,6 +5,8 @@
  */
 package virusservidor;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static javafx.beans.binding.Bindings.and;
 import virus.model.CartaDto;
+import virus.model.JugadorDto;
 
 /**
  *
@@ -30,6 +33,9 @@ public class VirusServidor {
         
         while (true) {
             try{
+            BufferedReader entrada;
+            DataOutputStream salida;
+            String mensajeRecibido;
             ServerSocket ss = new ServerSocket(44440);
             System.out.println("ServerSocket awaiting connections...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
@@ -41,12 +47,13 @@ public class VirusServidor {
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
             // read the list of messages from the socket
-            List<CartaDto> listOfMessages = (List<CartaDto>) objectInputStream.readObject();
+           
+            List<JugadorDto> listOfMessages = (List<JugadorDto>) objectInputStream.readObject();
             System.out.println("Received [" + listOfMessages.size() + "] messages from: " + socket);
             // print out the text of every message
             System.out.println("All messages:");
-            listOfMessages.forEach((msg) -> System.out.println(msg.getColor()));
-
+            listOfMessages.forEach((msg) -> System.out.println(msg.toString()));
+            //System.out.println(listOfMessages.toString());
             System.out.println("Closing sockets.");
             ss.close();
             socket.close();
@@ -97,10 +104,10 @@ public class VirusServidor {
 
         // make a bunch of messages to send.
         List<CartaDto> cartas = new ArrayList<>();
-        cartas.add(new CartaDto("Virus", "Roja", "XD.png", "Desechada"));
+        /*cartas.add(new CartaDto("Carta,"Virus", "Roja", "XD.png", "Desechada"));
         cartas.add(new CartaDto("Organo", "Roja", "HOLA.png", "Mazo"));
         cartas.add(new CartaDto("Medicina", "Verde", "ASDF.png", "Jugada"));
-        cartas.add(new CartaDto("Tratamiento", "Azul", "PLOK.png", "Desechada"));
+        cartas.add(new CartaDto("Tratamiento", "Azul", "PLOK.png", "Desechada"));*/
 
         System.out.println("Sending messages to the ServerSocket");
         objectOutputStream.writeObject(cartas);

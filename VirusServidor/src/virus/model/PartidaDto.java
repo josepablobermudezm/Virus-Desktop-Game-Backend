@@ -18,7 +18,7 @@ public class PartidaDto {
     private ArrayList<CartaDto> mazo;
     private ArrayList<CartaDto> desechadas;
     private ArrayList<JugadorDto> jugadores;
-
+    
     public PartidaDto(ArrayList<CartaDto> mazo, ArrayList<CartaDto> desechadas, ArrayList<JugadorDto> jugadores) {
         this.mazo = mazo;
         this.desechadas = desechadas;
@@ -48,6 +48,10 @@ public class PartidaDto {
     public void setJugadores(ArrayList<JugadorDto> jugadores) {
         this.jugadores = jugadores;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "PartidaDto{" + "mazo=" + mazo + ", desechadas=" + desechadas + ", jugadores=" + jugadores + '}';
+    }
+
 }
