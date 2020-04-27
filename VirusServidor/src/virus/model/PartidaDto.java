@@ -25,7 +25,13 @@ public class PartidaDto {
         this.jugadores = jugadores;
     }
 
+    public PartidaDto() {
+    }
+
     public ArrayList<CartaDto> getMazo() {
+        if(mazo==null){
+            mazo = new ArrayList();
+        }
         return mazo;
     }
 
@@ -34,6 +40,9 @@ public class PartidaDto {
     }
 
     public ArrayList<CartaDto> getDesechadas() {
+        if(desechadas==null){
+            desechadas = new ArrayList();
+        }
         return desechadas;
     }
 
@@ -42,6 +51,9 @@ public class PartidaDto {
     }
 
     public ArrayList<JugadorDto> getJugadores() {
+        if(jugadores==null){
+            jugadores = new ArrayList();
+        }
         return jugadores;
     }
 
