@@ -5,10 +5,49 @@
  */
 package virus.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Jose Pablo Bermudez
  */
 public class PartidaDto {
+    
+    private static final long serialVersionUID = 4L; 
+    
+    private ArrayList<CartaDto> mazo;
+    private ArrayList<CartaDto> desechadas;
+    private ArrayList<JugadorDto> jugadores;
+
+    public PartidaDto(ArrayList<CartaDto> mazo, ArrayList<CartaDto> desechadas, ArrayList<JugadorDto> jugadores) {
+        this.mazo = mazo;
+        this.desechadas = desechadas;
+        this.jugadores = jugadores;
+    }
+
+    public ArrayList<CartaDto> getMazo() {
+        return mazo;
+    }
+
+    public void setMazo(ArrayList<CartaDto> mazo) {
+        this.mazo = mazo;
+    }
+
+    public ArrayList<CartaDto> getDesechadas() {
+        return desechadas;
+    }
+
+    public void setDesechadas(ArrayList<CartaDto> desechadas) {
+        this.desechadas = desechadas;
+    }
+
+    public ArrayList<JugadorDto> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(ArrayList<JugadorDto> jugadores) {
+        this.jugadores = jugadores;
+    }
+    
     
 }
