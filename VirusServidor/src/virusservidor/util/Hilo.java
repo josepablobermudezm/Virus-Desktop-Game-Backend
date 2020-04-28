@@ -7,6 +7,7 @@ package virusservidor.util;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Timer;
@@ -30,6 +31,7 @@ public class Hilo {
     Socket socket;
     ServerSocket serverSocket;
     PartidaDto partida;
+    ObjectOutputStream objectoutlista;
     TimerTask task = new TimerTask() {
         @Override
         public void run() {
@@ -45,7 +47,7 @@ public class Hilo {
                             socket = new Socket(jugador.getIP(), 44440);
                             salida = new DataOutputStream(socket.getOutputStream());
                             salida.writeUTF("Partida Lista");
-
+                            objectoutlista.writeObject(partida.getJugadores());
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,11 +62,12 @@ public class Hilo {
         }
     };
 
-    public void correrHilo(DataOutputStream salida, Socket socket, ServerSocket serverSocket, PartidaDto partida) {
+    public void correrHilo(DataOutputStream salida, Socket socket, ServerSocket serverSocket, PartidaDto partida, ObjectOutputStream objectoutlista) {
         this.partida = partida;
         this.salida = salida;
         this.serverSocket = serverSocket;
         this.socket = socket;
+        this.objectoutlista = objectoutlista;
         timer.schedule(task, 10, 1000);
     }
 }

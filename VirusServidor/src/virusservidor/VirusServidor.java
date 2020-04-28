@@ -89,6 +89,8 @@ public class VirusServidor {
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
             OutputStream outputstream = socket.getOutputStream();
+            OutputStream outputlista = socket.getOutputStream();
+            
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
 
             JugadorDto Jugador = (JugadorDto) objectInputStream.readObject();
@@ -100,8 +102,9 @@ public class VirusServidor {
 
             System.out.println("Entregando Cartas a " + Jugador.getNombre());
             objectoutputstream.writeObject(partida.getCartasPorJugador());
-
-            VerificarPartida(salida, socket, ss); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
+            
+            ObjectOutputStream objectoutlista = new ObjectOutputStream(outputlista);
+            VerificarPartida(salida, socket, ss, objectoutlista); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
 
             System.out.println("Cerrando socket");
             ss.close();
@@ -136,17 +139,18 @@ public class VirusServidor {
         }
     }
 
-    public static void VerificarPartida(DataOutputStream salida, Socket socket, ServerSocket serverSocket) throws IOException {
+    public static void VerificarPartida(DataOutputStream salida, Socket socket, ServerSocket serverSocket, ObjectOutputStream objectoutlista) throws IOException {
         if (partida.getJugadores().size() == 6) {
             for (JugadorDto jugador : partida.getJugadores()) {
                 socket = new Socket(jugador.getIP(), 44440);
                 salida = new DataOutputStream(socket.getOutputStream());
                 salida.writeUTF("Partida Lista");
+                objectoutlista.writeObject(partida.getCartasPorJugador());
                 Hilo.finalizado = true;
             }
         } else if (partida.getJugadores().size() == 2) {
             Hilo hilo = new Hilo();
-            hilo.correrHilo(salida, socket, serverSocket, partida);
+            hilo.correrHilo(salida, socket, serverSocket, partida,objectoutlista);
         }
     }
 }
