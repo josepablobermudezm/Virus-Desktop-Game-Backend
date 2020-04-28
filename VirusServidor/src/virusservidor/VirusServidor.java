@@ -90,7 +90,7 @@ public class VirusServidor {
 
             OutputStream outputstream = socket.getOutputStream();
             OutputStream outputlista = socket.getOutputStream();
-            
+
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
 
             JugadorDto Jugador = (JugadorDto) objectInputStream.readObject();
@@ -102,7 +102,7 @@ public class VirusServidor {
 
             System.out.println("Entregando Cartas a " + Jugador.getNombre());
             objectoutputstream.writeObject(partida.getCartasPorJugador());
-            
+
             ObjectOutputStream objectoutlista = new ObjectOutputStream(outputlista);
             VerificarPartida(salida, socket, ss, objectoutlista); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
 
@@ -144,13 +144,14 @@ public class VirusServidor {
             for (JugadorDto jugador : partida.getJugadores()) {
                 socket = new Socket(jugador.getIP(), 44440);
                 salida = new DataOutputStream(socket.getOutputStream());
+                objectoutlista = new ObjectOutputStream(socket.getOutputStream());
                 salida.writeUTF("Partida Lista");
                 objectoutlista.writeObject(partida.getJugadores());
                 Hilo.finalizado = true;
             }
         } else if (partida.getJugadores().size() == 2) {
             Hilo hilo = new Hilo();
-            hilo.correrHilo(salida, socket, serverSocket, partida,objectoutlista);
+            hilo.correrHilo(salida, socket, serverSocket, partida, objectoutlista);
         }
     }
 }
