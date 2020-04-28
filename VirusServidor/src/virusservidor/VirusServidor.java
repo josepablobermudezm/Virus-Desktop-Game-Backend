@@ -75,8 +75,11 @@ public class VirusServidor {
     public static void recibirJugador(){
         try{
             ServerSocket ss = new ServerSocket(44440);
+            DataOutputStream salida;
+            
             System.out.println("Esperando Jugador...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            salida = new DataOutputStream(socket.getOutputStream());
             System.out.println("Conexión de " + socket + "!");
 
             // get the input stream from the connected socket
@@ -88,13 +91,17 @@ public class VirusServidor {
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
             
             JugadorDto Jugador = (JugadorDto) objectInputStream.readObject();
+            
             System.out.println("Mensajes:");
             System.out.println(Jugador.toString());
             
             partida.getJugadores().add(Jugador);
+            
             System.out.println("Entregando Cartas a "+Jugador.getNombre());
             objectoutputstream.writeObject(partida.getCartasPorJugador());
-            //partida.entregarCartasJugador(Jugador.getIP());
+            
+            VerificarPartida(salida,socket,ss); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
+            
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
@@ -125,6 +132,16 @@ public class VirusServidor {
             ss.close();
             socket.close();
         }catch(Exception IO){
+        }
+    }
+    
+    public static void VerificarPartida(DataOutputStream salida, Socket socket, ServerSocket serverSocket) throws IOException{
+        if(partida.getJugadores().size() == 2){
+            for (JugadorDto jugador : partida.getJugadores()) {
+                 socket = new Socket(jugador.getIP(), 44440);
+                 salida = new DataOutputStream(socket.getOutputStream());
+                 salida.writeUTF("Partida Lista");
+             }
         }
     }
 }
