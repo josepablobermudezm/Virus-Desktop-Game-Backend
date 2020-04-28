@@ -46,8 +46,14 @@ public class Hilo {
                         for (JugadorDto jugador : partida.getJugadores()) {
                             socket = new Socket(jugador.getIP(), 44440);
                             salida = new DataOutputStream(socket.getOutputStream());
+                            objectoutlista = new  ObjectOutputStream(socket.getOutputStream());
                             salida.writeUTF("Partida Lista");
                             objectoutlista.writeObject(partida.getJugadores());
+                            
+                         /*   socket = new Socket(jugador.getIP(), 44440);
+                            salida = new DataOutputStream(socket.getOutputStream());
+                            
+                            objectoutlista.writeObject(partida.getJugadores());*/
                         }
                     } catch (IOException ex) {
                         Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
