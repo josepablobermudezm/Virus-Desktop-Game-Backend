@@ -145,7 +145,7 @@ public class VirusServidor {
                 socket = new Socket(jugador.getIP(), 44440);
                 salida = new DataOutputStream(socket.getOutputStream());
                 salida.writeUTF("Partida Lista");
-                objectoutlista.writeObject(partida.getCartasPorJugador());
+                objectoutlista.writeObject(partida.getJugadores());
                 Hilo.finalizado = true;
             }
         } else if (partida.getJugadores().size() == 2) {
