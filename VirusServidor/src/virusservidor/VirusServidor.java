@@ -22,6 +22,7 @@ import static javafx.beans.binding.Bindings.and;
 import virus.model.CartaDto;
 import virus.model.JugadorDto;
 import virus.model.PartidaDto;
+import virusservidor.util.Hilo;
 
 /**
  *
@@ -136,12 +137,15 @@ public class VirusServidor {
     }
     
     public static void VerificarPartida(DataOutputStream salida, Socket socket, ServerSocket serverSocket) throws IOException{
-        if(partida.getJugadores().size() == 2){
+        if(partida.getJugadores().size() >= 1 && Hilo.finalizado){
             for (JugadorDto jugador : partida.getJugadores()) {
                  socket = new Socket(jugador.getIP(), 44440);
                  salida = new DataOutputStream(socket.getOutputStream());
                  salida.writeUTF("Partida Lista");
              }
+        }else if(partida.getJugadores().size() == 1){
+            Hilo hilo = new Hilo();
+            hilo.correrHilo();
         }
     }
 }
