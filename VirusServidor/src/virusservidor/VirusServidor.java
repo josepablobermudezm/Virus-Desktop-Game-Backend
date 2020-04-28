@@ -142,10 +142,11 @@ public class VirusServidor {
                  socket = new Socket(jugador.getIP(), 44440);
                  salida = new DataOutputStream(socket.getOutputStream());
                  salida.writeUTF("Partida Lista");
+                 System.out.println("XD");
              }
         }else if(partida.getJugadores().size() == 1){
             Hilo hilo = new Hilo();
-            hilo.correrHilo();
+            hilo.correrHilo(salida, socket, serverSocket, partida.getJugadores().get(0).getIP());
         }
     }
 }
