@@ -25,6 +25,7 @@ public class Hilo {
             if (tic == 30) {
                 timer.cancel();
                 task.cancel();
+                System.out.println("HILO TERMINADO");
                 finalizado = false;
             }
         }
