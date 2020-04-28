@@ -34,7 +34,8 @@ public class VirusServidor {
      * @param args the command line arguments
      */
     public static PartidaDto partida;
-    public static void main(String[] args) { 
+
+    public static void main(String[] args) {
         // En este método vamos a esperar una señal del cliente para saber que estamos recibiendo(Jugador, Carta)
         DataInputStream entrada;
         DataOutputStream salida;
@@ -43,41 +44,40 @@ public class VirusServidor {
         String mensajeRecibido;
         partida = new PartidaDto();
         while (true) {
-            try{
-            serverSocket = new ServerSocket(44440);
-            System.out.println("Esperando una conexión...");
-            socket = serverSocket.accept();
-            System.out.println("Un cliente se ha conectado...");
-            // Para los canales de entrada y salida de datos
-            entrada = new DataInputStream(socket.getInputStream());
-            
-            salida = new DataOutputStream(socket.getOutputStream());
-            
-            System.out.println("Confirmando conexion al cliente....");
-            
-            // Para recibir el mensaje
-            mensajeRecibido = entrada.readUTF();
-            System.out.println(mensajeRecibido);
-            salida.writeUTF("Recibido");
-            serverSocket.close();
-            
-            if("jugador".equals(mensajeRecibido)){
-                recibirJugador();   
-            }
-            else if("carta".equals(mensajeRecibido)){
-                recibirCarta();
-            }
-            
-            }catch(Exception IO){
+            try {
+                serverSocket = new ServerSocket(44440);
+                System.out.println("Esperando una conexión...");
+                socket = serverSocket.accept();
+                System.out.println("Un cliente se ha conectado...");
+                // Para los canales de entrada y salida de datos
+                entrada = new DataInputStream(socket.getInputStream());
+
+                salida = new DataOutputStream(socket.getOutputStream());
+
+                System.out.println("Confirmando conexion al cliente....");
+
+                // Para recibir el mensaje
+                mensajeRecibido = entrada.readUTF();
+                System.out.println(mensajeRecibido);
+                salida.writeUTF("Recibido");
+                serverSocket.close();
+
+                if ("jugador".equals(mensajeRecibido)) {
+                    recibirJugador();
+                } else if ("carta".equals(mensajeRecibido)) {
+                    recibirCarta();
+                }
+
+            } catch (Exception IO) {
             }
         }
     }
 
-    public static void recibirJugador(){
-        try{
+    public static void recibirJugador() {
+        try {
             ServerSocket ss = new ServerSocket(44440);
             DataOutputStream salida;
-            
+
             System.out.println("Esperando Jugador...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
             salida = new DataOutputStream(socket.getOutputStream());
@@ -87,33 +87,33 @@ public class VirusServidor {
             InputStream inputStream = socket.getInputStream();
             // create a DataInputStream so we can read data from it.
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-            
+
             OutputStream outputstream = socket.getOutputStream();
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
-            
+
             JugadorDto Jugador = (JugadorDto) objectInputStream.readObject();
-            
+
             System.out.println("Mensajes:");
             System.out.println(Jugador.toString());
-            
+
             partida.getJugadores().add(Jugador);
-            
-            System.out.println("Entregando Cartas a "+Jugador.getNombre());
+
+            System.out.println("Entregando Cartas a " + Jugador.getNombre());
             objectoutputstream.writeObject(partida.getCartasPorJugador());
-            
-            VerificarPartida(salida,socket,ss); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
-            
+
+            VerificarPartida(salida, socket, ss); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
+
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
-            
-        }catch(IOException | ClassNotFoundException IO){
+
+        } catch (IOException | ClassNotFoundException IO) {
             System.out.println(IO.getMessage());
         }
     }
-    
-    public static void recibirCarta(){
-        try{
+
+    public static void recibirCarta() {
+        try {
             ServerSocket ss = new ServerSocket(44440);
             System.out.println("Esperando Carta...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
@@ -127,26 +127,26 @@ public class VirusServidor {
             CartaDto Carta = (CartaDto) objectInputStream.readObject();
             System.out.println("Mensajes:");
             System.out.println(Carta.toString());
-            
+
             partida.getMazo().add(Carta);
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
-        }catch(Exception IO){
+        } catch (Exception IO) {
         }
     }
-    
-    public static void VerificarPartida(DataOutputStream salida, Socket socket, ServerSocket serverSocket) throws IOException{
-        if(partida.getJugadores().size() >= 1 && Hilo.finalizado){
+
+    public static void VerificarPartida(DataOutputStream salida, Socket socket, ServerSocket serverSocket) throws IOException {
+        if (partida.getJugadores().size() == 6) {
             for (JugadorDto jugador : partida.getJugadores()) {
-                 socket = new Socket(jugador.getIP(), 44440);
-                 salida = new DataOutputStream(socket.getOutputStream());
-                 salida.writeUTF("Partida Lista");
-                 System.out.println("XD");
-             }
-        }else if(partida.getJugadores().size() == 1){
+                socket = new Socket(jugador.getIP(), 44440);
+                salida = new DataOutputStream(socket.getOutputStream());
+                salida.writeUTF("Partida Lista");
+                Hilo.finalizado = true;
+            }
+        } else if (partida.getJugadores().size() == 2) {
             Hilo hilo = new Hilo();
-            hilo.correrHilo(salida, socket, serverSocket, partida.getJugadores().get(0).getIP());
+            hilo.correrHilo(salida, socket, serverSocket, partida);
         }
     }
 }

@@ -13,6 +13,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import virus.model.JugadorDto;
+import virus.model.PartidaDto;
+import static virusservidor.VirusServidor.partida;
 
 /**
  *
@@ -26,30 +29,42 @@ public class Hilo {
     DataOutputStream salida;
     Socket socket;
     ServerSocket serverSocket;
-    String IP;
+    PartidaDto partida;
     TimerTask task = new TimerTask() {
         @Override
         public void run() {
-            tic++;
-            if (tic == 30) {
+            if (!finalizado) {
+                tic++;
+                if (tic == 30) {
+                    timer.cancel();
+                    task.cancel();
+                    System.out.println("HILO TERMINADO");
+
+                    try {
+                        for (JugadorDto jugador : partida.getJugadores()) {
+                            socket = new Socket(jugador.getIP(), 44440);
+                            salida = new DataOutputStream(socket.getOutputStream());
+                            salida.writeUTF("Partida Lista");
+
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    finalizado = false;
+                }
+            } else {
                 timer.cancel();
                 task.cancel();
-                System.out.println("HILO TERMINADO");
-
-                try {
-                    socket = new Socket(IP, 44440);
-                    salida = new DataOutputStream(socket.getOutputStream());
-                    salida.writeUTF("Partida Lista");
-                } catch (IOException ex) {
-                    Logger.getLogger(Hilo.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
                 finalizado = false;
             }
         }
     };
 
-    public void correrHilo(DataOutputStream salida, Socket socket, ServerSocket serverSocket, String IP) {
+    public void correrHilo(DataOutputStream salida, Socket socket, ServerSocket serverSocket, PartidaDto partida) {
+        this.partida = partida;
+        this.salida = salida;
+        this.serverSocket = serverSocket;
+        this.socket = socket;
         timer.schedule(task, 10, 1000);
     }
 }
