@@ -50,6 +50,7 @@ public class VirusServidor {
                 socket = serverSocket.accept();
                 System.out.println("Un cliente se ha conectado...");
                 // Para los canales de entrada y salida de datos
+                
                 entrada = new DataInputStream(socket.getInputStream());
 
                 salida = new DataOutputStream(socket.getOutputStream());
@@ -77,17 +78,34 @@ public class VirusServidor {
     
     public static void enviarCarta(){
          try {
-            String mensajeRecibido;
             ServerSocket ss = new ServerSocket(44440);
+            DataOutputStream salida;
+            
             System.out.println("Esperando Jugador...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            salida = new DataOutputStream(socket.getOutputStream());
             System.out.println("Conexión de " + socket + "!");
+            
+            
+            
+            // get the input stream from the connected socket
+            DataInputStream entrada;
+            entrada = new DataInputStream(socket.getInputStream());
+
+            String mensajeRecibido = entrada.readUTF();
+            System.out.println(mensajeRecibido);
+            // create a DataInputStream so we can read data from it.
+
             OutputStream outputstream = socket.getOutputStream();
-            ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
+
+            ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);           
+
             objectoutputstream.writeObject(partida.getCarta());
+
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
+
         } catch (IOException IO) {
             System.out.println(IO.getMessage());
         }
