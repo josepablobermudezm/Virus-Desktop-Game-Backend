@@ -81,10 +81,10 @@ public class PartidaDto {
         mazo.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
         mazo.add(new CartaDto("Virus", "Azul", "virusAzulCarta.png", "Mazo"));
 
-        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
-        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
-        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
-        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarilloCarta.png", "Mazo"));
+        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarrilloCarta.png", "Mazo"));
+        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarrilloCarta.png", "Mazo"));
+        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarrilloCarta.png", "Mazo"));
+        mazo.add(new CartaDto("Virus", "Amarillo", "virusAmarrilloCarta.png", "Mazo"));
 
         mazo.add(new CartaDto("Virus_Comodin", "Comodin", "comodinVirus.png", "Mazo"));
 
