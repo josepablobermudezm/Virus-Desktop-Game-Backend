@@ -66,10 +66,30 @@ public class VirusServidor {
                     recibirJugador();
                 } else if ("carta".equals(mensajeRecibido)) {
                     recibirCarta();
+                }else if("pedirCartas".equals(mensajeRecibido)){
+                    enviarCarta();
                 }
-
+                
             } catch (Exception IO) {
             }
+        }
+    }
+    
+    public static void enviarCarta(){
+         try {
+            String mensajeRecibido;
+            ServerSocket ss = new ServerSocket(44440);
+            System.out.println("Esperando Jugador...");
+            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            System.out.println("Conexión de " + socket + "!");
+            OutputStream outputstream = socket.getOutputStream();
+            ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
+            objectoutputstream.writeObject(partida.getCarta());
+            System.out.println("Cerrando socket");
+            ss.close();
+            socket.close();
+        } catch (IOException IO) {
+            System.out.println(IO.getMessage());
         }
     }
 

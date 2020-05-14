@@ -194,6 +194,17 @@ public class PartidaDto {
         mazo.removeAll(cartas);
         return cartas;
     }
+    
+    public CartaDto getCarta() {
+        CartaDto carta = null;
+        ArrayList<CartaDto> cartas = new ArrayList<>();
+        if (!mazo.isEmpty()) {
+            carta = mazo.remove(0);
+        }
+        return carta;
+    }
+    
+    
 
     @Override
     public String toString() {
