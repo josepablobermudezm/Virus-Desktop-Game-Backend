@@ -18,6 +18,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javafx.beans.binding.Bindings.and;
 import virus.model.CartaDto;
 import virus.model.JugadorDto;
@@ -50,7 +52,7 @@ public class VirusServidor {
                 socket = serverSocket.accept();
                 System.out.println("Un cliente se ha conectado...");
                 // Para los canales de entrada y salida de datos
-                
+
                 entrada = new DataInputStream(socket.getInputStream());
 
                 salida = new DataOutputStream(socket.getOutputStream());
@@ -67,17 +69,64 @@ public class VirusServidor {
                     recibirJugador();
                 } else if ("carta".equals(mensajeRecibido)) {
                     recibirCarta();
-                }else if("pedirCartas".equals(mensajeRecibido)){
+                } else if ("pedirCartas".equals(mensajeRecibido)) {
                     enviarCarta();
+                } else if ("desecharCarta".equals(mensajeRecibido)) {
+                    desecharCarta();
                 }
-                
-            } catch (Exception IO) {
+            } catch (IOException IO) {
+                System.out.println(IO.getMessage());
             }
         }
     }
-    
-    public static void enviarCarta(){
-         try {
+
+    public static void desecharCarta() {
+       try {
+            ServerSocket ss = new ServerSocket(44440);
+            DataOutputStream salida;
+
+            System.out.println("Esperando Jugador...");
+            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            salida = new DataOutputStream(socket.getOutputStream());
+            System.out.println("Conexión de " + socket + "!");
+
+            // get the input stream from the connected socket
+            InputStream inputStream = socket.getInputStream();
+            // create a DataInputStream so we can read data from it.
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+            CartaDto carta = (CartaDto) objectInputStream.readObject();
+
+            System.out.println("Mensajes:");
+            System.out.println(carta.toString());
+
+           /*partida.getJugadores().stream().forEach((jugador) -> {
+                try {
+                    Socket socket2 = new Socket(jugador.getIP(), 44440);
+                    DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+                    //DataInputStream respuesta = new DataInputStream(socket2.getInputStream());
+                    System.out.println("Connected Text!");
+                    OutputStream outputstream = socket2.getOutputStream();
+                    ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
+                    objectoutputstream.writeObject(carta);
+                    socket2.close();
+                } catch (IOException e) {
+
+                }
+            });*/
+            
+            System.out.println("Cerrando socket");
+            ss.close();
+            socket.close();
+
+        } catch (IOException | ClassNotFoundException IO) {
+            System.out.println(IO.getMessage());
+        }
+       
+    }
+
+    public static void enviarCarta() {
+        try {
             ServerSocket ss = new ServerSocket(44440);
             System.out.println("Esperando Conexion Jugador...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
@@ -85,7 +134,7 @@ public class VirusServidor {
             DataInputStream entrada;
             entrada = new DataInputStream(socket.getInputStream());
             OutputStream outputstream = socket.getOutputStream();
-            ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);           
+            ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
             objectoutputstream.writeObject(partida.getCarta());
             System.out.println("Cerrando socket");
             ss.close();
