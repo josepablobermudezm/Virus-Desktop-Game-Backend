@@ -5,22 +5,15 @@
  */
 package virusservidor;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static javafx.beans.binding.Bindings.and;
 import virus.model.CartaDto;
 import virus.model.JugadorDto;
 import virus.model.PartidaDto;
@@ -54,7 +47,7 @@ public class VirusServidor {
                 // Para los canales de entrada y salida de datos
 
                 entrada = new DataInputStream(socket.getInputStream());
-                
+
                 salida = new DataOutputStream(socket.getOutputStream());
 
                 System.out.println("Confirmando conexion al cliente....");
@@ -73,6 +66,8 @@ public class VirusServidor {
                     enviarCarta();
                 } else if ("desecharCarta".equals(mensajeRecibido)) {
                     desecharCarta();
+                } else if ("cambioTurno".equals(mensajeRecibido)) {
+                    cambiarTurno();
                 }
             } catch (IOException IO) {
                 System.out.println(IO.getMessage());
@@ -80,8 +75,40 @@ public class VirusServidor {
         }
     }
 
+    public static void cambiarTurno() {
+        try {
+            ServerSocket ss = new ServerSocket(44440);
+
+            System.out.println("Esperando Conexion de Jugador...");
+            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            System.out.println("Conexión de " + socket + "!");
+
+            partida.getJugadores().stream().forEach((jugador) -> {
+                try {
+                    Socket socket2 = new Socket(jugador.getIP(), 44440);
+                    DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+
+                    OutputStream outputstream = socket2.getOutputStream();
+                    mensaje2.writeUTF("cambioTurno");
+                    mensaje2.writeUTF(partida.cambiarTurno().getIP());
+                    
+                    socket2.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+
+            System.out.println("Cerrando socket");
+            ss.close();
+            socket.close();
+
+        } catch (IOException IO) {
+            System.out.println(IO.getMessage());
+        }
+    }
+
     public static void desecharCarta() {
-       try {
+        try {
             ServerSocket ss = new ServerSocket(44440);
 
             System.out.println("Esperando Jugador...");
@@ -95,27 +122,24 @@ public class VirusServidor {
 
             CartaDto carta = (CartaDto) objectInputStream.readObject();
 
-            System.out.println("Mensajes:");
-            System.out.println(carta.toString());
-
-           partida.getJugadores().stream().forEach((jugador) -> {
+            partida.getJugadores().stream().forEach((jugador) -> {
                 try {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
                     DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
-                   
+
                     //DataInputStream respuesta = new DataInputStream(socket2.getInputStream());
                     System.out.println("Connected Text!");
                     OutputStream outputstream = socket2.getOutputStream();
                     mensaje2.writeUTF("cartaDesechada");
                     ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
                     objectoutputstream.writeObject(carta);
-                    
+
                     socket2.close();
                 } catch (IOException e) {
 
                 }
             });
-            
+
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
@@ -123,7 +147,6 @@ public class VirusServidor {
         } catch (IOException | ClassNotFoundException IO) {
             System.out.println(IO.getMessage());
         }
-       
     }
 
     public static void enviarCarta() {
@@ -169,7 +192,7 @@ public class VirusServidor {
 
             System.out.println("Mensajes:");
             System.out.println(Jugador.toString());
-
+            
             partida.getJugadores().add(Jugador);
 
             System.out.println("Entregando Cartas a " + Jugador.getNombre());

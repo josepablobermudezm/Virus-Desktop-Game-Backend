@@ -43,7 +43,13 @@ public class Hilo {
                     System.out.println("HILO TERMINADO");
 
                     try {
+                        /*
+                            Le da el turno al primer jugador 
+                        */
+                        partida.getJugadores().get(0).setTurno(true);
                         for (JugadorDto jugador : partida.getJugadores()) {
+                            
+                            
                             socket = new Socket(jugador.getIP(), 44440);
                             salida = new DataOutputStream(socket.getOutputStream());
                             objectoutlista = new  ObjectOutputStream(socket.getOutputStream());

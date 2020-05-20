@@ -152,9 +152,7 @@ public class PartidaDto {
             mazo = new ArrayList();
         }
         return mazo;
-    }
-    
-    
+    }  
 
     public void setMazo(ArrayList<CartaDto> mazo) {
         this.mazo = mazo;
@@ -204,7 +202,26 @@ public class PartidaDto {
         return carta;
     }
     
-    
+    public JugadorDto cambiarTurno(){
+        int i = getJugadores().indexOf(getJugadores().stream().filter(x->x.getTurno()).findAny().get());
+        /*
+        Cambia el estado de todos los jugadores, para luego cambiar el turno por medio de sus indices
+        */
+        getJugadores().stream().forEach(jugador->{
+            jugador.setTurno(false);
+        });
+        
+        if(i+1 != getJugadores().size()){
+            getJugadores().get(i+1).setTurno(true);
+        }else{
+            getJugadores().get(0).setTurno(true);
+        }
+        if(getJugadores().stream().filter(x->x.getTurno()).findAny().isPresent()){
+           return getJugadores().stream().filter(x->x.getTurno()).findAny().get();
+        }else{
+            return null;
+        }
+    }
 
     @Override
     public String toString() {
