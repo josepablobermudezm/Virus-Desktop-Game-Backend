@@ -76,35 +76,22 @@ public class VirusServidor {
     }
 
     public static void cambiarTurno() {
-        try {
-            ServerSocket ss = new ServerSocket(44440);
 
-            System.out.println("Esperando Conexion de Jugador...");
-            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
-            System.out.println("Conexión de " + socket + "!");
+        partida.getJugadores().stream().forEach((jugador) -> {
+            try {
+                Socket socket2 = new Socket(jugador.getIP(), 44440);
+                DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
 
-            partida.getJugadores().stream().forEach((jugador) -> {
-                try {
-                    Socket socket2 = new Socket(jugador.getIP(), 44440);
-                    DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+                OutputStream outputstream = socket2.getOutputStream();
+                mensaje2.writeUTF("cambioTurno");
+                mensaje2.writeUTF(partida.cambiarTurno().getIP());
+                socket2.close();
+                System.out.println("Mensaje Enviado");
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        });
 
-                    OutputStream outputstream = socket2.getOutputStream();
-                    mensaje2.writeUTF("cambioTurno");
-                    mensaje2.writeUTF(partida.cambiarTurno().getIP());
-                    
-                    socket2.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                }
-            });
-
-            System.out.println("Cerrando socket");
-            ss.close();
-            socket.close();
-
-        } catch (IOException IO) {
-            System.out.println(IO.getMessage());
-        }
     }
 
     public static void desecharCarta() {
@@ -192,7 +179,7 @@ public class VirusServidor {
 
             System.out.println("Mensajes:");
             System.out.println(Jugador.toString());
-            
+
             partida.getJugadores().add(Jugador);
 
             System.out.println("Entregando Cartas a " + Jugador.getNombre());
