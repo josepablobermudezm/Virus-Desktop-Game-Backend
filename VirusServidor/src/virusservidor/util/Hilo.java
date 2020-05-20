@@ -37,7 +37,7 @@ public class Hilo {
         public void run() {
             if (!finalizado) {
                 tic++;
-                if (tic == 30) {
+                if (tic == 10) {
                     timer.cancel();
                     task.cancel();
                     System.out.println("HILO TERMINADO");

@@ -54,7 +54,7 @@ public class VirusServidor {
                 // Para los canales de entrada y salida de datos
 
                 entrada = new DataInputStream(socket.getInputStream());
-
+                
                 salida = new DataOutputStream(socket.getOutputStream());
 
                 System.out.println("Confirmando conexion al cliente....");
@@ -83,11 +83,9 @@ public class VirusServidor {
     public static void desecharCarta() {
        try {
             ServerSocket ss = new ServerSocket(44440);
-            DataOutputStream salida;
 
             System.out.println("Esperando Jugador...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
-            salida = new DataOutputStream(socket.getOutputStream());
             System.out.println("Conexión de " + socket + "!");
 
             // get the input stream from the connected socket
@@ -100,20 +98,23 @@ public class VirusServidor {
             System.out.println("Mensajes:");
             System.out.println(carta.toString());
 
-           /*partida.getJugadores().stream().forEach((jugador) -> {
+           partida.getJugadores().stream().forEach((jugador) -> {
                 try {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
                     DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+                   
                     //DataInputStream respuesta = new DataInputStream(socket2.getInputStream());
                     System.out.println("Connected Text!");
                     OutputStream outputstream = socket2.getOutputStream();
+                    mensaje2.writeUTF("cartaDesechada");
                     ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
                     objectoutputstream.writeObject(carta);
+                    
                     socket2.close();
                 } catch (IOException e) {
 
                 }
-            });*/
+            });
             
             System.out.println("Cerrando socket");
             ss.close();
@@ -220,7 +221,7 @@ public class VirusServidor {
                 objectoutlista.writeObject(partida.getJugadores());
                 Hilo.finalizado = true;
             }
-        } else if (partida.getJugadores().size() == 2) {
+        } else if (partida.getJugadores().size() == 1) {
             Hilo hilo = new Hilo();
             hilo.correrHilo(salida, socket, serverSocket, partida, objectoutlista);
         }
