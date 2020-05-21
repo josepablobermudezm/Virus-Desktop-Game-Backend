@@ -22,8 +22,6 @@ public class CartaDto implements Serializable {
     private String color;
     private String imagen;
     private String estado;
-
-
     
     CartaDto(){
         

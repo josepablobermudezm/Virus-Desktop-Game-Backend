@@ -76,7 +76,8 @@ public class VirusServidor {
     }
 
     public static void cambiarTurno() {
-
+        
+        String IP = partida.cambiarTurno().getIP();
         partida.getJugadores().stream().forEach((jugador) -> {
             try {
                 Socket socket2 = new Socket(jugador.getIP(), 44440);
@@ -84,7 +85,7 @@ public class VirusServidor {
 
                 OutputStream outputstream = socket2.getOutputStream();
                 mensaje2.writeUTF("cambioTurno");
-                mensaje2.writeUTF(partida.cambiarTurno().getIP());
+                mensaje2.writeUTF(IP);
                 socket2.close();
                 System.out.println("Mensaje Enviado");
             } catch (IOException e) {
@@ -231,7 +232,7 @@ public class VirusServidor {
                 objectoutlista.writeObject(partida.getJugadores());
                 Hilo.finalizado = true;
             }
-        } else if (partida.getJugadores().size() == 1) {
+        } else if (partida.getJugadores().size() == 2) {
             Hilo hilo = new Hilo();
             hilo.correrHilo(salida, socket, serverSocket, partida, objectoutlista);
         }
