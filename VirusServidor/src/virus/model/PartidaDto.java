@@ -40,11 +40,11 @@ public class PartidaDto {
         if(this.mazo == null){
             mazo = new ArrayList();
         }
-        mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-        mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-        mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-        mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
-        mazo.add(new CartaDto("Organo", "Rojo", "corazonCarta.png", "mazo"));
+        mazo.add(new CartaDto("Corazon", "Rojo", "corazonCarta.png", "mazo"));
+        mazo.add(new CartaDto("Corazon", "Rojo", "corazonCarta.png", "mazo"));
+        mazo.add(new CartaDto("Corazon", "Rojo", "corazonCarta.png", "mazo"));
+        mazo.add(new CartaDto("Corazon", "Rojo", "corazonCarta.png", "mazo"));
+        mazo.add(new CartaDto("Corazon", "Rojo", "corazonCarta.png", "mazo"));
 
         mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
         mazo.add(new CartaDto("Estomago", "Verde", "estomagoVerdeCarta.png", "mazo"));
