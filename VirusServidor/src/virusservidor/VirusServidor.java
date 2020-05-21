@@ -58,16 +58,29 @@ public class VirusServidor {
                 salida.writeUTF("Recibido");
                 serverSocket.close();
 
-                if ("jugador".equals(mensajeRecibido)) {
-                    recibirJugador();
-                } else if ("carta".equals(mensajeRecibido)) {
-                    recibirCarta();
-                } else if ("pedirCartas".equals(mensajeRecibido)) {
-                    enviarCarta();
-                } else if ("desecharCarta".equals(mensajeRecibido)) {
-                    desecharCarta();
-                } else if ("cambioTurno".equals(mensajeRecibido)) {
-                    cambiarTurno();
+                if (null != mensajeRecibido) {
+                    switch (mensajeRecibido) {
+                        case "jugador":
+                            recibirJugador();
+                            break;
+                        case "carta":
+                            recibirCarta();
+                            break;
+                        case "pedirCartas":
+                            enviarCarta();
+                            break;
+                        case "desecharCarta":
+                            desecharCarta();
+                            break;
+                        case "cambioTurno":
+                            cambiarTurno();
+                            break;
+                        case "movimientoJugador":
+                            movimientoJuego();
+                            break;
+                        default:
+                            break;
+                    }
                 }
             } catch (IOException IO) {
                 System.out.println(IO.getMessage());
@@ -75,8 +88,59 @@ public class VirusServidor {
         }
     }
 
+    public static void movimientoJuego() {
+        try {
+            DataInputStream entrada;
+            ServerSocket ss = new ServerSocket(44440);
+
+            System.out.println("Esperando Jugador...");
+            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            System.out.println("Conexión de " + socket + "!");
+            entrada = new DataInputStream(socket.getInputStream());
+             
+            // get the input stream from the connected socket
+            InputStream inputStream = socket.getInputStream();
+            // create a DataInputStream so we can read data from it.
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+            CartaDto carta = (CartaDto) objectInputStream.readObject();
+            
+            /*
+            Llega el ID del padre y luego el del hijo
+            */
+            String padre= entrada.readUTF();
+            String hijo = entrada.readUTF();
+            partida.getJugadores().stream().forEach((jugador) -> {
+                try {
+                    Socket socket2 = new Socket(jugador.getIP(), 44440);
+                    DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+
+                    //DataInputStream respuesta = new DataInputStream(socket2.getInputStream());
+                    System.out.println("Connected Text!");
+                    OutputStream outputstream = socket2.getOutputStream();
+                    mensaje2.writeUTF("movimientoJugador");
+                    mensaje2.writeUTF(padre);
+                    mensaje2.writeUTF(hijo);
+                    ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
+                    objectoutputstream.writeObject(carta);
+
+                    socket2.close();
+                } catch (IOException e) {
+                    System.out.println("Error :" + e.getMessage());
+                }
+            });
+
+            System.out.println("Cerrando socket");
+            ss.close();
+            socket.close();
+
+        } catch (IOException | ClassNotFoundException IO) {
+            System.out.println(IO.getMessage());
+        }
+    }
+
     public static void cambiarTurno() {
-        
+
         String IP = partida.cambiarTurno().getIP();
         partida.getJugadores().stream().forEach((jugador) -> {
             try {
@@ -124,7 +188,7 @@ public class VirusServidor {
 
                     socket2.close();
                 } catch (IOException e) {
-
+                    System.out.println("Error :" + e.getMessage());
                 }
             });
 
