@@ -219,6 +219,8 @@ public class VirusServidor {
             OutputStream outputstream = socket.getOutputStream();
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
             CartaDto carta = partida.getCarta();
+            System.out.println("TAMANOOOOOOOOOOOOOOO "+ partida.getMazo().size());
+            
             if (carta != null) {
                 objectoutputstream.writeObject(carta);
             } else {
