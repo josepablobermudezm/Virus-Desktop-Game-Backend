@@ -14,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
 import virus.model.CartaDto;
 import virus.model.JugadorDto;
 import virus.model.PartidaDto;
@@ -97,24 +99,23 @@ public class VirusServidor {
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
             System.out.println("Conexión de " + socket + "!");
             entrada = new DataInputStream(socket.getInputStream());
-             
+
             // get the input stream from the connected socket
             InputStream inputStream = socket.getInputStream();
             // create a DataInputStream so we can read data from it.
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
             CartaDto carta = (CartaDto) objectInputStream.readObject();
-            
+
             /*
             Llega el ID del padre y luego el del hijo
-            */
-            String padre= entrada.readUTF();
+             */
+            String padre = entrada.readUTF();
             String hijo = entrada.readUTF();
             /*
             Ip del jugador que recibe
-            */
-            String IPJugador = entrada.readUTF(); 
-            System.out.println("IP JUGADOR "+ IPJugador);
+             */
+            String IPJugador = entrada.readUTF();
             partida.getJugadores().stream().forEach((jugador) -> {
                 try {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
@@ -217,7 +218,26 @@ public class VirusServidor {
             entrada = new DataInputStream(socket.getInputStream());
             OutputStream outputstream = socket.getOutputStream();
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
-            objectoutputstream.writeObject(partida.getCarta());
+            CartaDto carta = partida.getCarta();
+            if (carta != null) {
+                objectoutputstream.writeObject(carta);
+            } else {
+                //Envia null para que me devuelva las cartas
+                objectoutputstream.writeObject(carta);
+                InputStream inputStream = socket.getInputStream();
+                // create a DataInputStream so we can read data from it.
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                try {
+                    ArrayList<CartaDto> cartas = (ArrayList<CartaDto>)objectInputStream.readObject();
+                    Collections.shuffle(cartas);
+                    Collections.shuffle(cartas);
+                    partida.setMazo(cartas);
+                    objectoutputstream.writeObject(partida.getCarta());
+                } catch (IOException | ClassNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
             System.out.println("Cerrando socket");
             ss.close();
             socket.close();
@@ -289,7 +309,7 @@ public class VirusServidor {
             ss.close();
             socket.close();
         } catch (Exception IO) {
-            
+
         }
     }
 
