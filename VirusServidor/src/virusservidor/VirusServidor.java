@@ -222,12 +222,14 @@ public class VirusServidor {
             if (carta != null) {
                 objectoutputstream.writeObject(carta);
             } else {
+                System.out.println("SE TERMINOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 //Envia null para que me devuelva las cartas
                 objectoutputstream.writeObject(carta);
                 InputStream inputStream = socket.getInputStream();
                 // create a DataInputStream so we can read data from it.
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                 try {
+                    
                     ArrayList<CartaDto> cartas = (ArrayList<CartaDto>)objectInputStream.readObject();
                     Collections.shuffle(cartas);
                     Collections.shuffle(cartas);
