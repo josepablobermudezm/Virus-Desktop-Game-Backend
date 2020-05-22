@@ -110,6 +110,11 @@ public class VirusServidor {
             */
             String padre= entrada.readUTF();
             String hijo = entrada.readUTF();
+            /*
+            Ip del jugador que recibe
+            */
+            String IPJugador = entrada.readUTF(); 
+            System.out.println("IP JUGADOR "+ IPJugador);
             partida.getJugadores().stream().forEach((jugador) -> {
                 try {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
@@ -121,6 +126,7 @@ public class VirusServidor {
                     mensaje2.writeUTF("movimientoJugador");
                     mensaje2.writeUTF(padre);
                     mensaje2.writeUTF(hijo);
+                    mensaje2.writeUTF(IPJugador);
                     ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
                     objectoutputstream.writeObject(carta);
 
@@ -283,6 +289,7 @@ public class VirusServidor {
             ss.close();
             socket.close();
         } catch (Exception IO) {
+            
         }
     }
 
