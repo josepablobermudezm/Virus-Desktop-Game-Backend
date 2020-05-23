@@ -122,7 +122,7 @@ public class PartidaDto {
         mazo.add(new CartaDto("Guante", "Morado", "guantesDeLatexCarta.png", "Mazo"));
 
         mazo.add(new CartaDto("Error", "Morado", "errorMedicoCarta.png", "Mazo"));
-
+        
         Collections.shuffle(mazo);
     }
     

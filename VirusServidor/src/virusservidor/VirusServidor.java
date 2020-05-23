@@ -130,7 +130,8 @@ public class VirusServidor {
                     mensaje2.writeUTF(IPJugador);
                     ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
                     objectoutputstream.writeObject(carta);
-
+                    
+                    
                     socket2.close();
                 } catch (IOException e) {
                     System.out.println("Error :" + e.getMessage());
@@ -214,24 +215,20 @@ public class VirusServidor {
             System.out.println("Esperando Conexion Jugador...");
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
             System.out.println("Conexión de " + socket + "!");
-            DataInputStream entrada;
-            entrada = new DataInputStream(socket.getInputStream());
             OutputStream outputstream = socket.getOutputStream();
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
             CartaDto carta = partida.getCarta();
-            System.out.println("TAMANOOOOOOOOOOOOOOO "+ partida.getMazo().size());
             
             if (carta != null) {
                 objectoutputstream.writeObject(carta);
             } else {
-                System.out.println("SE TERMINOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 //Envia null para que me devuelva las cartas
+                System.out.println("XDDD "+ carta);
                 objectoutputstream.writeObject(carta);
                 InputStream inputStream = socket.getInputStream();
                 // create a DataInputStream so we can read data from it.
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                 try {
-                    
                     ArrayList<CartaDto> cartas = (ArrayList<CartaDto>)objectInputStream.readObject();
                     Collections.shuffle(cartas);
                     Collections.shuffle(cartas);
