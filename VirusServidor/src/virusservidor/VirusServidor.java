@@ -80,6 +80,9 @@ public class VirusServidor {
                         case "movimientoJugador":
                             movimientoJuego();
                             break;
+                        case "partidaFinalizada":
+                            finalizarJuego();
+                            break;
                         default:
                             break;
                     }
@@ -88,6 +91,24 @@ public class VirusServidor {
                 System.out.println(IO.getMessage());
             }
         }
+    }
+
+    private static void finalizarJuego() {
+        partida.getJugadores().stream().forEach((jugador) -> {
+            try {
+                Socket socket2 = new Socket(jugador.getIP(), 44440);
+                DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+
+                //DataInputStream respuesta = new DataInputStream(socket2.getInputStream());
+                System.out.println("Connected Text!");
+                OutputStream outputstream = socket2.getOutputStream();
+                mensaje2.writeUTF("partidaFinalizada");
+                System.out.println("Partida finalizada");
+                socket2.close();
+            } catch (IOException e) {
+                System.out.println("Error :" + e.getMessage());
+            }
+        });
     }
 
     public static void movimientoJuego() {
@@ -130,8 +151,7 @@ public class VirusServidor {
                     mensaje2.writeUTF(IPJugador);
                     ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
                     objectoutputstream.writeObject(carta);
-                    
-                    
+
                     socket2.close();
                 } catch (IOException e) {
                     System.out.println("Error :" + e.getMessage());
@@ -218,18 +238,18 @@ public class VirusServidor {
             OutputStream outputstream = socket.getOutputStream();
             ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
             CartaDto carta = partida.getCarta();
-            
+
             if (carta != null) {
                 objectoutputstream.writeObject(carta);
             } else {
                 //Envia null para que me devuelva las cartas
-                System.out.println("XDDD "+ carta);
+                System.out.println("XDDD " + carta);
                 objectoutputstream.writeObject(carta);
                 InputStream inputStream = socket.getInputStream();
                 // create a DataInputStream so we can read data from it.
                 ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                 try {
-                    ArrayList<CartaDto> cartas = (ArrayList<CartaDto>)objectInputStream.readObject();
+                    ArrayList<CartaDto> cartas = (ArrayList<CartaDto>) objectInputStream.readObject();
                     Collections.shuffle(cartas);
                     Collections.shuffle(cartas);
                     partida.setMazo(cartas);
