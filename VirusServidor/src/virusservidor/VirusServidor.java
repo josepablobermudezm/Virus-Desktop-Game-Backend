@@ -127,6 +127,7 @@ public class VirusServidor {
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 
             CartaDto carta = (CartaDto) objectInputStream.readObject();
+            System.out.println(carta.getImagen() + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
             /*
             Llega el ID del padre y luego el del hijo
