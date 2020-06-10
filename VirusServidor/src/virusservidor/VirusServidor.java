@@ -83,6 +83,9 @@ public class VirusServidor {
                         case "partidaFinalizada":
                             finalizarJuego();
                             break;
+                        case "mazoTerminado":
+                            mazoTerminado();
+                            break;
                         default:
                             break;
                     }
@@ -94,16 +97,18 @@ public class VirusServidor {
     }
 
     private static void finalizarJuego() {
+        partida = new PartidaDto();
+    }
+
+    public static void mazoTerminado() {
         partida.getJugadores().stream().forEach((jugador) -> {
             try {
                 Socket socket2 = new Socket(jugador.getIP(), 44440);
                 DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
-
-                //DataInputStream respuesta = new DataInputStream(socket2.getInputStream());
                 System.out.println("Connected Text!");
                 OutputStream outputstream = socket2.getOutputStream();
-                mensaje2.writeUTF("partidaFinalizada");
-                System.out.println("Partida finalizada");
+                mensaje2.writeUTF("mazoTerminado");
+                ObjectOutputStream objectoutputstream = new ObjectOutputStream(outputstream);
                 socket2.close();
             } catch (IOException e) {
                 System.out.println("Error :" + e.getMessage());
