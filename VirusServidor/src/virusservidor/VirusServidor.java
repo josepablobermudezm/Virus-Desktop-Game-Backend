@@ -297,11 +297,13 @@ public class VirusServidor {
 
             System.out.println("Mensajes:");
             System.out.println(Jugador.toString());
-
+            
+            ArrayList <CartaDto> mazo = partida.getCartasPorJugador();
+            Jugador.setMazo(mazo);
             partida.getJugadores().add(Jugador);
 
             System.out.println("Entregando Cartas a " + Jugador.getNombre());
-            objectoutputstream.writeObject(partida.getCartasPorJugador());
+            objectoutputstream.writeObject(mazo);
 
             ObjectOutputStream objectoutlista = new ObjectOutputStream(outputlista);
             VerificarPartida(salida, socket, ss, objectoutlista); // Verificamos la cantidad de jugadores que existen hasta el momento en la partida
