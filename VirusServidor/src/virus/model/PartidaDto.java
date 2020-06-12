@@ -21,9 +21,9 @@ public class PartidaDto {
 
     private static final long serialVersionUID = 4L;
 
-    private ArrayList <CartaDto> mazo;
-    private ArrayList <CartaDto> desechadas;
-    private ArrayList <JugadorDto> jugadores;
+    private ArrayList<CartaDto> mazo;
+    private ArrayList<CartaDto> desechadas;
+    private ArrayList<JugadorDto> jugadores;
 
     public PartidaDto(ArrayList<CartaDto> mazo, ArrayList<CartaDto> desechadas, ArrayList<JugadorDto> jugadores) {
         this.mazo = mazo;
@@ -37,7 +37,7 @@ public class PartidaDto {
     }
 
     public void crearMazo() {
-        if(this.mazo == null){
+        if (this.mazo == null) {
             mazo = new ArrayList();
         }
         mazo.add(new CartaDto("Corazon", "Rojo", "corazonCarta.png", "Sano"));
@@ -107,26 +107,22 @@ public class PartidaDto {
         mazo.add(new CartaDto("Medicina_Comodin", "Morado", "comodinMedicina.png", "Sano"));
         mazo.add(new CartaDto("Medicina_Comodin", "Morado", "comodinMedicina.png", "Sano"));
         mazo.add(new CartaDto("Medicina_Comodin", "Morado", "comodinMedicina.png", "Sano"));
-
+ /*
         mazo.add(new CartaDto("Transplante", "Morado", "transplanteCarta.png", "Sano"));
         mazo.add(new CartaDto("Transplante", "Morado", "transplanteCarta.png", "Sano"));
-
-        mazo.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Sano"));
-        mazo.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Sano"));
+         */
         mazo.add(new CartaDto("Ladron", "Morado", "ladrondeOrganosCarta.png", "Sano"));
 
+        /*
         mazo.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Sano"));
         mazo.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Sano"));
         mazo.add(new CartaDto("Contagio", "Morado", "contagioCarta.png", "Sano"));
-
+         */
         mazo.add(new CartaDto("Guante", "Morado", "guantesDeLatexCarta.png", "Sano"));
-
-        mazo.add(new CartaDto("Error", "Morado", "errorMedicoCarta.png", "Sano"));
-        
+        //mazo.add(new CartaDto("Error", "Morado", "errorMedicoCarta.png", "Sano"));
         Collections.shuffle(mazo);
     }
-    
-    
+
     public void entregarCartasJugador(String Ip) {
         try {
             Socket socket = new Socket(Ip, 44440);
@@ -143,7 +139,7 @@ public class PartidaDto {
             System.out.println("Closing socket and terminating program.");
             socket.close();
         } catch (IOException IO) {
-            
+
         }
     }
 
@@ -152,7 +148,7 @@ public class PartidaDto {
             mazo = new ArrayList();
         }
         return mazo;
-    }  
+    }
 
     public void setMazo(ArrayList<CartaDto> mazo) {
         this.mazo = mazo;
@@ -192,7 +188,7 @@ public class PartidaDto {
         mazo.removeAll(cartas);
         return cartas;
     }
-    
+
     public CartaDto getCarta() {
         CartaDto carta = null;
         ArrayList<CartaDto> cartas = new ArrayList<>();
@@ -201,24 +197,24 @@ public class PartidaDto {
         }
         return carta;
     }
-    
-    public JugadorDto cambiarTurno(){
-        int i = getJugadores().indexOf(getJugadores().stream().filter(x->x.getTurno()).findAny().get());
+
+    public JugadorDto cambiarTurno() {
+        int i = getJugadores().indexOf(getJugadores().stream().filter(x -> x.getTurno()).findAny().get());
         /*
         Cambia el estado de todos los jugadores, para luego cambiar el turno por medio de sus indices
-        */
-        getJugadores().stream().forEach(jugador->{
+         */
+        getJugadores().stream().forEach(jugador -> {
             jugador.setTurno(false);
         });
-        
-        if(i+1 != getJugadores().size()){
-            getJugadores().get(i+1).setTurno(true);
-        }else{
+
+        if (i + 1 != getJugadores().size()) {
+            getJugadores().get(i + 1).setTurno(true);
+        } else {
             getJugadores().get(0).setTurno(true);
         }
-        if(getJugadores().stream().filter(x->x.getTurno()).findAny().isPresent()){
-           return getJugadores().stream().filter(x->x.getTurno()).findAny().get();
-        }else{
+        if (getJugadores().stream().filter(x -> x.getTurno()).findAny().isPresent()) {
+            return getJugadores().stream().filter(x -> x.getTurno()).findAny().get();
+        } else {
             return null;
         }
     }

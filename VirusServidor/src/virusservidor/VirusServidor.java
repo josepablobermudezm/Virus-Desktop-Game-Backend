@@ -42,6 +42,7 @@ public class VirusServidor {
         partida = new PartidaDto();
         while (true) {
             try {
+                System.out.println(partida.getMazo().size() + "carta desechada...........................................");
                 serverSocket = new ServerSocket(44440);
                 System.out.println("Esperando una conexión...");
                 socket = serverSocket.accept();
@@ -98,27 +99,29 @@ public class VirusServidor {
             }
         }
     }
-    
-    public static void ladron(){
+
+    public static void ladron() {
         try {
             DataInputStream entrada;
             ServerSocket ss = new ServerSocket(44440);
             Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            System.out.println("conexión1");
             entrada = new DataInputStream(socket.getInputStream());
-            InputStream inputStream = socket.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             String padre = entrada.readUTF();
             String hijo = entrada.readUTF();
             String IPJugador = entrada.readUTF();
+            System.out.println("conexión2");
             partida.getJugadores().stream().forEach((jugador) -> {
                 try {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
+                    System.out.println("conexión3");
                     DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
                     OutputStream outputstream = socket2.getOutputStream();
                     mensaje2.writeUTF("Ladron");
                     mensaje2.writeUTF(padre);
                     mensaje2.writeUTF(hijo);
                     mensaje2.writeUTF(IPJugador);
+                    System.out.println("conexión4");
                     socket2.close();
                 } catch (IOException e) {
                     System.out.println("Error :" + e.getMessage());
@@ -129,7 +132,7 @@ public class VirusServidor {
         } catch (IOException IO) {
             System.out.println(IO.getMessage());
         }
-        
+
     }
 
     private static void finalizarJuego() {
