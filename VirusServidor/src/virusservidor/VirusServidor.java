@@ -81,6 +81,9 @@ public class VirusServidor {
                         case "Ladron":
                             ladron();
                             break;
+                        case "errorMedico":
+                            ErrorMedico();
+                            break;
                         case "movimientoJugador":
                             movimientoJuego();
                             break;
@@ -120,6 +123,39 @@ public class VirusServidor {
                     mensaje2.writeUTF("Ladron");
                     mensaje2.writeUTF(padre);
                     mensaje2.writeUTF(hijo);
+                    mensaje2.writeUTF(IPJugador);
+                    System.out.println("conexión4");
+                    socket2.close();
+                } catch (IOException e) {
+                    System.out.println("Error :" + e.getMessage());
+                }
+            });
+            ss.close();
+            socket.close();
+        } catch (IOException IO) {
+            System.out.println(IO.getMessage());
+        }
+
+    }
+    
+    public static void ErrorMedico() {
+        try {
+            DataInputStream entrada;
+            ServerSocket ss = new ServerSocket(44440);
+            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            System.out.println("conexión1");
+            entrada = new DataInputStream(socket.getInputStream());
+            String padre = entrada.readUTF();
+            String IPJugador = entrada.readUTF();
+            System.out.println("conexión2");
+            partida.getJugadores().stream().forEach((jugador) -> {
+                try {
+                    Socket socket2 = new Socket(jugador.getIP(), 44440);
+                    System.out.println("conexión3");
+                    DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+                    OutputStream outputstream = socket2.getOutputStream();
+                    mensaje2.writeUTF("errorMedico");
+                    mensaje2.writeUTF(padre);
                     mensaje2.writeUTF(IPJugador);
                     System.out.println("conexión4");
                     socket2.close();
