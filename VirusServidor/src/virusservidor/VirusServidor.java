@@ -146,7 +146,6 @@ public class VirusServidor {
             System.out.println("conexión1");
             entrada = new DataInputStream(socket.getInputStream());
             String padre = entrada.readUTF();
-            String IPJugador = entrada.readUTF();
             System.out.println("conexión2");
             partida.getJugadores().stream().forEach((jugador) -> {
                 try {
@@ -156,7 +155,6 @@ public class VirusServidor {
                     OutputStream outputstream = socket2.getOutputStream();
                     mensaje2.writeUTF("errorMedico");
                     mensaje2.writeUTF(padre);
-                    mensaje2.writeUTF(IPJugador);
                     System.out.println("conexión4");
                     socket2.close();
                 } catch (IOException e) {
