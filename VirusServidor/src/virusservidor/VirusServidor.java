@@ -93,6 +93,9 @@ public class VirusServidor {
                         case "mazoTerminado":
                             mazoTerminado();
                             break;
+                        case "Transplante":
+                            transplante();
+                            break;
                         default:
                             break;
                     }
@@ -103,6 +106,39 @@ public class VirusServidor {
         }
     }
 
+    public static void transplante() {
+        try {
+            DataInputStream entrada;
+            ServerSocket ss = new ServerSocket(44440);
+            Socket socket = ss.accept(); // blocking call, this will wait until a connection is attempted on this port.
+            entrada = new DataInputStream(socket.getInputStream());
+            String padre1 = entrada.readUTF();
+            String hijo1 = entrada.readUTF();
+            String padre2 = entrada.readUTF();
+            String hijo2 = entrada.readUTF();
+            partida.getJugadores().stream().forEach((jugador) -> {
+                try {
+                    Socket socket2 = new Socket(jugador.getIP(), 44440);
+                    DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
+                    OutputStream outputstream = socket2.getOutputStream();
+                    mensaje2.writeUTF("Ladron");
+                    mensaje2.writeUTF(padre1);
+                    mensaje2.writeUTF(hijo1);
+                    mensaje2.writeUTF(padre2);
+                    mensaje2.writeUTF(hijo2);
+                    socket2.close();
+                } catch (IOException e) {
+                    System.out.println("Error :" + e.getMessage());
+                }
+            });
+            ss.close();
+            socket.close();
+        } catch (IOException IO) {
+            System.out.println(IO.getMessage());
+        }
+    }
+
+    
     public static void ladron() {
         try {
             DataInputStream entrada;
@@ -135,9 +171,8 @@ public class VirusServidor {
         } catch (IOException IO) {
             System.out.println(IO.getMessage());
         }
-
     }
-    
+
     public static void ErrorMedico() {
         try {
             DataInputStream entrada;
