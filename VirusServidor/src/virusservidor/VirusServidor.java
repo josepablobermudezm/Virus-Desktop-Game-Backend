@@ -121,7 +121,7 @@ public class VirusServidor {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
                     DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
                     OutputStream outputstream = socket2.getOutputStream();
-                    mensaje2.writeUTF("Ladron");
+                    mensaje2.writeUTF("Transplante");
                     mensaje2.writeUTF(padre1);
                     mensaje2.writeUTF(hijo1);
                     mensaje2.writeUTF(padre2);
