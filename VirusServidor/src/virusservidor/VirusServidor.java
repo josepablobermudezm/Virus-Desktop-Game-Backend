@@ -95,6 +95,7 @@ public class VirusServidor {
                             break;
                         case "Transplante":
                             transplante();
+                            break;
                         case "Contagio":
                             contagio();
                             break;
@@ -142,6 +143,7 @@ public class VirusServidor {
 
     public static void transplante() {
         try {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAa");
             DataInputStream entrada;
             ServerSocket ss = new ServerSocket(44440);
             Socket socket = ss.accept(); 
@@ -150,11 +152,14 @@ public class VirusServidor {
             String hijo1 = entrada.readUTF();
             String padre2 = entrada.readUTF();
             String hijo2 = entrada.readUTF();
+            ss.close();
+            socket.close();
             partida.getJugadores().stream().forEach((jugador) -> {
                 try {
                     Socket socket2 = new Socket(jugador.getIP(), 44440);
                     DataOutputStream mensaje2 = new DataOutputStream(socket2.getOutputStream());
                     OutputStream outputstream = socket2.getOutputStream();
+                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAa");
                     mensaje2.writeUTF("Transplante");
                     mensaje2.writeUTF(padre1);
                     mensaje2.writeUTF(hijo1);
@@ -165,8 +170,7 @@ public class VirusServidor {
                     System.out.println("Error :" + e.getMessage());
                 }
             });
-            ss.close();
-            socket.close();
+            
         } catch (IOException IO) {
             System.out.println(IO.getMessage());
         }
@@ -493,7 +497,7 @@ public class VirusServidor {
                 objectoutlista.writeObject(partida.getJugadores());
                 Hilo.finalizado = true;
             }
-        } else if (partida.getJugadores().size() == 2) {
+        } else if (partida.getJugadores().size() == 3) {
             Hilo hilo = new Hilo();
             hilo.correrHilo(salida, socket, serverSocket, partida, objectoutlista);
         }
